@@ -1,0 +1,131 @@
+.wapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    height: 98vh;
+    background-image: url("./background.jpg");
+}
+
+/* 設置隊伍畫面 */
+#team_set_content {
+    display: none;
+}
+#team_set_content div {
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+}
+#team_set_content input {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    margin: 0 10px;
+}
+
+/* 設置玩家姓名 */
+#set_name_content {
+    width: 900px;
+    display: none;
+    text-align: center;
+}
+#set_name_title {
+    width: 100%;
+}
+#set_name_item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.team_content {
+    margin: 5px;
+    width: 23%;
+    background: darkmagenta;
+}
+.team_content input {
+    margin: 5px;
+    text-align: center;
+}
+.set_name_input {
+    width: 110px;
+}
+.set_sort_input {
+    width: 40px;
+}
+#set_second {
+    margin-top: 10px;
+    width: 100%;
+}
+#set_second input {
+    text-align: center;
+    width: 100px;
+}
+#set_name_check {
+    margin-top: 15px;
+}
+
+/* 遊戲區 */
+#game {
+    display: none;
+}
+#game_item {
+    margin: 180px 0 120px 0;
+}
+#game_item,
+#game_players {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+#game_topic {
+    position: fixed;
+    top: 80px;
+    height: 150px;
+    line-height: 150px;
+    font-size: 100px;
+}
+#game_prompt {
+    text-align: center;
+    font-size: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#game_prompt_text {
+    line-height: 300px;
+    height: 300px;
+    background: #0A4001;
+    border-radius: 20px;
+    padding: 0 20px;
+    color: #fff;
+}
+[class^=game_team] {
+    padding: 10px;
+    margin: 10px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 10px;
+    font-weight: 900;
+    color: #fff;
+    font-size: 20px;
+    display: inline-block;
+}
+.game_team1 {
+    background: #8C0303;
+}
+
+.game_team2 {
+    background: #022601;
+}
+
+.game_team3 {
+    background: #F28627;
+}
+
+.game_team4 {
+    background: #400101;
+}
