@@ -71,7 +71,7 @@
     display: none;
 }
 #game_item {
-    margin: 180px 0 120px 0;
+    margin: 250px 0 120px 0;
 }
 #game_item,
 #game_players {
@@ -86,7 +86,51 @@
     top: 80px;
     height: 150px;
     line-height: 150px;
-    font-size: 100px;
+    font-size: 200px;
+}
+#game_ctrl {
+    text-align: center;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 80px;
+    right: 5%;
+    font-size: 50px;
+}
+#game_status {
+    width: 50%;
+    height: 100px;
+    line-height: 100px;
+    background: #F28627;
+    color: #fff;
+    padding: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 30px;
+}
+#game_reply {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#game_right_answer {
+    background: #022601;
+}
+#game_wrong_answer {
+    background: #8C0303;
+}
+#game_right_answer,
+#game_wrong_answer {
+    margin: 10px 10px;
+    padding: 20px 20px;
+    color: #fff;
+    border-radius: 50px;
+    width: 50%;
+    cursor: pointer;
+    user-select: none;
 }
 #game_prompt {
     text-align: center;
@@ -100,7 +144,7 @@
     height: 300px;
     background: #0A4001;
     border-radius: 20px;
-    padding: 0 20px;
+    padding: 0 60px;
     color: #fff;
 }
 [class^=game_team] {
@@ -128,4 +172,8 @@
 
 .game_team4 {
     background: #400101;
+}
+.cur_play {
+    font-size: 40px;
+    padding: 30px;
 }

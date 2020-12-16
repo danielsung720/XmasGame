@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>~聖誕節快樂~</title>
 </head>
 <link rel="stylesheet" type="text/css" href="index.css">
+
 <body>
     <div class="wapper">
         <div class="content">
@@ -17,14 +19,16 @@
             <!-- 配置隊伍畫面 -->
             <div id="team_set_content">
                 <div>
-                    本次參加隊伍<input id="team_quantity" type="text" onkeyup="checkTeamQuantity(this, 1)" autocomplete="off">支
+                    本次參加隊伍<input id="team_quantity" type="text" onkeyup="checkTeamQuantity(this, 1)"
+                        autocomplete="off">支
                     <div id="team_quantity_prompt">請輸入數字或2~4支的隊伍</div>
                 </div>
                 <div>
-                    每組人數為<input id="member_quantity" type="text" onkeyup="checkTeamQuantity(this, 2)" autocomplete="off">人
+                    每組人數為<input id="member_quantity" type="text" onkeyup="checkTeamQuantity(this, 2)"
+                        autocomplete="off">人
                     <div id="member_quantity_prompt">請輸入數字或2~6人</div>
                 </div>
-                
+
                 <div>
                     <button id="team_check" onclick="teamCheck()">確認</button>
                 </div>
@@ -45,6 +49,13 @@
             <!-- 遊戲區域 -->
             <div id="game">
                 <div id="game_topic"></div>
+                <div id="game_ctrl">
+                    <div id="game_status" onclick="changeGameStatus()">暫停</div>
+                    <div id="game_reply">
+                        <div id="game_wrong_answer" onclick="out()">答錯</div>
+                        <div id="game_right_answer" onclick="pass()">答對</div>
+                    </div>
+                </div>
                 <div id="game_item">
                     <div id="game_prompt">
                         <div id="game_prompt_text"></div>
@@ -57,247 +68,284 @@
 </body>
 <script src="jquery-3.5.1.js"></script>
 <script>
-function startUpGame(){
-    $('#start_content').hide();
+    var game_status = true;
+    var timer;
+    var set_second;
+    var game_list = Array();
+    var player_list = Array();
+    var cur_num = 0;
 
-    // // 遊戲測試區
-    // var list = [
-    //     [
-    //         { name: '王維', sort: '1', team: 1 },
-    //         { name: '杜甫', sort: '9', team: 1 },
-    //         { name: '李白', sort: '3', team: 1 },
-    //         { name: '陶淵明', sort: '11', team: 1 },
-    //         { name: '韓愈', sort: '5', team: 1 },
-    //         { name: '柳宗元', sort: '7', team: 1 },
-    //     ],
-    //     [
-    //         { name: '蔡依林', sort: '2', team: 2 },
-    //         { name: '周杰倫', sort: '4', team: 2 },
-    //         { name: '林俊傑', sort: '6', team: 2 },
-    //         { name: '盧廣仲', sort: '8', team: 2 },
-    //         { name: '陳奕迅', sort: '10', team: 2 },
-    //         { name: '范瑋琪', sort: '12', team: 2 },
-    //     ]
-    // ];
+    function startUpGame() {
+        $('#start_content').hide();
+        // $('#team_set_content').css({"display": "flex", "flex-wrap": "wrap", "justify-content": "center"});
 
-    // var topic = ['車', '玩具', '動物', '黑色的物體'];
-    // var game_list = Array();
-    // for (i = 0; i < 2; i++) {
-    //     for (j = 0; j < 6; j++) {
-    //         game_list.push(list[i][j]);
-    //     }
-    // }
-    // game_list = game_list.sort(function (a, b) {
-    //     return a.sort * 1 < b.sort * 1 ? 1 : -1;
-    // });
-    // console.log(game_list);
+        // 快速試玩
+        var list = [
+            [
+                { name: '王維', sort: '1', team: 1 },
+                { name: '杜甫', sort: '9', team: 1 },
+                { name: '李白', sort: '3', team: 1 },
+                { name: '陶淵明', sort: '11', team: 1 },
+                { name: '韓愈', sort: '5', team: 1 },
+                { name: '柳宗元', sort: '7', team: 1 },
+            ],
+            [
+                { name: '蔡依林', sort: '2', team: 2 },
+                { name: '周杰倫', sort: '4', team: 2 },
+                { name: '林俊傑', sort: '6', team: 2 },
+                { name: '盧廣仲', sort: '8', team: 2 },
+                { name: '陳奕迅', sort: '10', team: 2 },
+                { name: '范瑋琪', sort: '12', team: 2 },
+            ]
+        ];
 
-    // game_list.forEach(function(item){
-    //     $(`<div class="game_team${item.team}">${item.name}<div>`).appendTo($('#game_players'));
-    // });
-    // $('#game').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
+        var topic = ['車', '玩具', '動物', '黑色的物體'];
 
-    // $('#game_prompt_text').text(3);
-    // var timeinterval = setInterval(function(){
-    //     var second = $('#game_prompt_text').text() * 1;
-    //     $('#game_prompt_text').text(second - 1);
+        var k = 0;
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 6; j++) {
+                k++;
+                game_list.push(list[i][j]);
+                player_list.push(k);
+            }
+        }
+        game_list = game_list.sort(function (a, b) {
+            return a.sort * 1 < b.sort * 1 ? 1 : -1;
+        });
+        console.log(game_list);
 
-    //     if(second == 1)
-    //     {
-    //         clearInterval(timeinterval);
-    //         $('#game_prompt_text').text('遊戲開始');
+        game_list.forEach(function (item, index) {
+            $(`<div id="player${index + 1}" class="game_team${item.team}">${item.name}</div>`).appendTo($('#game_players'));
+        });
+        $('#game').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
 
-    //         setTimeout(function() {
-    //             $('#game_prompt_text').text('');
-    //             $('#game_topic').text(topic[0]);
+        $('#game_prompt_text').text(3);
+        timer = setInterval(function () {
+            var second = $('#game_prompt_text').text() * 1;
+            $('#game_prompt_text').text(second - 1);
 
-    //             goQuestions(game_list, 1);
-    //         }, 1000)
-    //     }
-    // }, 50);
+            if (second == 1) {
+                clearInterval(timer);
+                $('#game_prompt_text').text('遊戲開始');
 
-    $('#team_set_content').css({"display": "flex", "flex-wrap": "wrap", "justify-content": "center"});
-}
+                setTimeout(function () {
+                    $('#game_prompt_text').text('');
+                    $('#game_topic').text(topic[0]);
+                    $('#game_ctrl').css('display', 'flex');
 
-function checkTeamQuantity(e, type){
-    var num = $(e).val();
-    var reg = type == 1 ? /^[2-4]$/ : /^[2-6]$/;
-    var promt = type == 1 ? 'team_quantity_prompt' : 'member_quantity_prompt';
-    if(reg.test(num)) {
-        $(`#${promt}`).hide();
-    } else {
-        $(`#${promt}`).show();
+                    // var set_second = $('#set_second_input').val();
+                    set_second = 3;
+
+                    goQuestions(cur_num, set_second);
+                }, 1000)
+            }
+        }, 1000);
     }
-}
 
-function teamCheck(){
-    var team_quantity_verify = $('#team_quantity_prompt').css('display');
-    var member_quantity_verify = $('#member_quantity_prompt').css('display');
-    if(team_quantity_verify == "block" || member_quantity_verify == "block")
-    {
-        return false;
+    function checkTeamQuantity(e, type) {
+        var num = $(e).val();
+        var reg = type == 1 ? /^[2-4]$/ : /^[2-6]$/;
+        var promt = type == 1 ? 'team_quantity_prompt' : 'member_quantity_prompt';
+        if (reg.test(num)) {
+            $(`#${promt}`).hide();
+        } else {
+            $(`#${promt}`).show();
+        }
     }
-    $('#team_set_content').hide();
 
-    creatTeam();
-}
+    function teamCheck() {
+        var team_quantity_verify = $('#team_quantity_prompt').css('display');
+        var member_quantity_verify = $('#member_quantity_prompt').css('display');
+        if (team_quantity_verify == "block" || member_quantity_verify == "block") {
+            return false;
+        }
+        $('#team_set_content').hide();
 
-function creatTeam(){
-    var team_quantity = $('#team_quantity').val();
-    var member_quantity = $('#member_quantity').val();
-    $('#set_name_title').text(`本次遊玩共${team_quantity}支隊伍，每支隊伍玩家${member_quantity}人`)
-    $('#set_name_content').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
+        creatTeam();
+    }
 
-    var team_tpl = Array();
-    for(i = 0; i < team_quantity; i++)
-    {
-        team_tpl.push(`
-            <div id="team${i+1}" class="team_content">
-                <div>第${i+1}隊</div>
+    function creatTeam() {
+        var team_quantity = $('#team_quantity').val();
+        var member_quantity = $('#member_quantity').val();
+        $('#set_name_title').text(`本次遊玩共${team_quantity}支隊伍，每支隊伍玩家${member_quantity}人`)
+        $('#set_name_content').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
+
+        var team_tpl = Array();
+        for (i = 0; i < team_quantity; i++) {
+            team_tpl.push(`
+            <div id="team${i + 1}" class="team_content">
+                <div>第${i + 1}隊</div>
             </div>
         `);
-    }
-    $(team_tpl.join("")).appendTo($('#set_name_item'));
-    
-    for(i = 0; i < team_quantity; i++) {
-        var name_input_tpl = Array();
-        for(j = 0; j < member_quantity; j++) {
-            name_input_tpl.push(`
+        }
+        $(team_tpl.join("")).appendTo($('#set_name_item'));
+
+        for (i = 0; i < team_quantity; i++) {
+            var name_input_tpl = Array();
+            for (j = 0; j < member_quantity; j++) {
+                name_input_tpl.push(`
                 <div>
-                    <input id="team${i+1}-member${j+1}" type="text" class="set_name_input" placeholder="姓名"/>
-                    <input id="team${i+1}-sort${j+1}" type="text" class="set_sort_input" onchange="checkSort(this, ${i}, ${j})" placeholder="順序"/>
+                    <input id="team${i + 1}-member${j + 1}" type="text" class="set_name_input" placeholder="姓名"/>
+                    <input id="team${i + 1}-sort${j + 1}" type="text" class="set_sort_input" onchange="checkSort(this, ${i}, ${j})" placeholder="順序"/>
                 </div>
             `);
-        }
-        $(name_input_tpl.join("")).appendTo($(`#team${i+1}`));
-    }
-}
-
-function checkSort(e, teamNum, MemberNum){
-    var num = $(e).val();
-    var team_quantity = $('#team_quantity').val();
-    var member_quantity = $('#member_quantity').val();
-    var max = team_quantity * member_quantity;
-    
-    if(num < 0) {
-        alert('順序請勿小於1!!'); $(e).val(""); return false;
-    }
-    if(num > max) {
-        alert('順序請勿超過人數上限!!'); $(e).val(""); return false;
-    }
-
-    for (i = 0; i < team_quantity; i++) {
-        for (j = 0; j < member_quantity; j++) {
-            if(i == teamNum && j == MemberNum) {
-                continue;
             }
+            $(name_input_tpl.join("")).appendTo($(`#team${i + 1}`));
+        }
+    }
 
-            var sort = $(`#team${i + 1}-sort${j + 1}`).val();
-            if(num != "" && num == sort) {
-                alert('順序請勿重複!!'); $(e).val(""); $(e).focus(); return false;
+    function checkSort(e, teamNum, MemberNum) {
+        var num = $(e).val();
+        var team_quantity = $('#team_quantity').val();
+        var member_quantity = $('#member_quantity').val();
+        var max = team_quantity * member_quantity;
+
+        if (num < 0) {
+            alert('順序請勿小於1!!'); $(e).val(""); return false;
+        }
+        if (num > max) {
+            alert('順序請勿超過人數上限!!'); $(e).val(""); return false;
+        }
+
+        for (i = 0; i < team_quantity; i++) {
+            for (j = 0; j < member_quantity; j++) {
+                if (i == teamNum && j == MemberNum) {
+                    continue;
+                }
+
+                var sort = $(`#team${i + 1}-sort${j + 1}`).val();
+                if (num != "" && num == sort) {
+                    alert('順序請勿重複!!'); $(e).val(""); $(e).focus(); return false;
+                }
             }
         }
     }
-}
 
-function setMembersName(){
-    var team_quantity = $('#team_quantity').val();
-    var member_quantity = $('#member_quantity').val();
-    var team_list = Array();
+    function setMembersName() {
+        var team_quantity = $('#team_quantity').val();
+        var member_quantity = $('#member_quantity').val();
+        var team_list = Array();
 
-    for (i = 0; i < team_quantity; i++) {
-        var team = Array();
-        for (j = 0; j < member_quantity; j++) {
-            var name = $(`#team${i + 1}-member${j + 1}`).val();
-            var sort = $(`#team${i + 1}-sort${j + 1}`).val();
-            if(name == "" || sort == "") {
-                alert('請將人員姓名/順序全數輸入'); return false;
+        for (i = 0; i < team_quantity; i++) {
+            var team = Array();
+            for (j = 0; j < member_quantity; j++) {
+                var name = $(`#team${i + 1}-member${j + 1}`).val();
+                var sort = $(`#team${i + 1}-sort${j + 1}`).val();
+                if (name == "" || sort == "") {
+                    alert('請將人員姓名/順序全數輸入'); return false;
+                }
+                team.push({
+                    name: name,
+                    sort: sort,
+                    team: i + 1
+                });
             }
-            team.push({
-                name: name,
-                sort: sort,
-                team: i+1
-            });
+            team_list.push(team);
         }
-        team_list.push(team);
+        var reg = /^\d{1,2}$/;
+        var second = $('#set_second_input').val();
+        if (!reg.test(second) || second < 0 || second > 30) {
+            alert('秒數區間為1~30秒，請輸入正確格式'); return false;
+        }
+
+
+        var check = confirm('遊戲即將開始，請確認人員名單');
+        if (!check) { return false; }
+
+        $('#set_name_content').hide();
+        startGame(team_list);
     }
-    var reg = /^\d{1,2}$/;
-    var second = $('#set_second_input').val();
-    if(!reg.test(second) || second < 0 || second > 30)
-    {
-        alert('秒數區間為1~30秒，請輸入正確格式'); return false;
+
+    function startGame(list) {
+        var topic = ['車', '玩具', '動物', '黑色的物體'];
+        var game_list = Array();
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 6; j++) {
+                game_list.push(list[i][j]);
+            }
+        }
+        game_list = game_list.sort(function (a, b) {
+            return a.sort * 1 < b.sort * 1 ? 1 : -1;
+        });
+
+        game_list.forEach(function (item) {
+            $(`<div class="game_team${item.team} alive">${item.name}</div>`).appendTo($('#game_players'));
+        });
+        $('#game').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
+
+        $('#game_prompt_text').text(3);
+        var timeinterval = setInterval(function () {
+            var second = $('#game_prompt_text').text() * 1;
+            $('#game_prompt_text').text(second - 1);
+
+            if (second == 1) {
+                clearInterval(timeinterval);
+                $('#game_prompt_text').text('遊戲開始');
+
+                setTimeout(function () {
+                    $('#game_prompt_text').text('');
+                    $('#game_topic').text(topic[0]);
+
+                    set_second = $('#set_second_input').val();
+
+                    goQuestions(game_list, 1, set_second);
+                }, 1000)
+            }
+        }, 1000);
+    }
+
+    function goQuestions(num, set_second) {
+        clearInterval(timer);
+        $('#game_prompt_text').text(set_second);
+
+        var max = player_list.length;
+
+        $(`#player${player_list[cur_num-1]}`).removeClass('cur_play');
+        if (num >= max) {
+            cur_num = 0;
+        }
+        $(`#player${player_list[cur_num]}`).addClass('cur_play');
+
+        console.log(cur_num);
+
+        timer = setInterval(function () {
+            var second = $('#game_prompt_text').text() * 1;
+            $('#game_prompt_text').text(second - 1);
+
+            if (second == 1) {
+                clearInterval(timer);
+                $('#game_prompt_text').text('╳');
+            }
+        }, 1000);
+    }
+
+    function changeGameStatus() {
+        if (game_status == true) 
+        {
+            clearInterval(timer);
+            $('#game_status').text('開始');
+            game_status = false;
+        } 
+        else if(game_status == false) 
+        {
+            cur_num++;
+            goQuestions(cur_num, set_second);
+            $('#game_status').text('暫停');
+            game_status = true;
+        }
     }
     
-
-    var check = confirm('遊戲即將開始，請確認人員名單');
-    if(!check) { return false; }
-    
-    $('#set_name_content').hide();
-    startGame(team_list);
-}
-
-function startGame(list){
-    var topic = ['車', '玩具', '動物', '黑色的物體'];
-    var game_list = Array();
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 6; j++) {
-            game_list.push(list[i][j]);
-        }
+    function out(){
+        $(`#player${player_list[cur_num]}`).css('background', '#7B7B7B').removeClass('cur_play');
+        player_list.splice(cur_num, 1);
+        goQuestions(cur_num, set_second);
     }
-    game_list = game_list.sort(function (a, b) {
-        return a.sort * 1 < b.sort * 1 ? 1 : -1;
-    });
 
-    game_list.forEach(function (item) {
-        $(`<div class="game_team${item.team}">${item.name}<div>`).appendTo($('#game_players'));
-    });
-    $('#game').css({ "display": "flex", "flex-wrap": "wrap", "justify-content": "center" });
-
-    $('#game_prompt_text').text(3);
-    var timeinterval = setInterval(function () {
-        var second = $('#game_prompt_text').text() * 1;
-        $('#game_prompt_text').text(second - 1);
-
-        if (second == 1) {
-            clearInterval(timeinterval);
-            $('#game_prompt_text').text('遊戲開始');
-
-            setTimeout(function () {
-                $('#game_prompt_text').text('');
-                $('#game_topic').text(topic[0]);
-                
-                var set_second = $('#set_second_input').val();
-
-                goQuestions(game_list, 1, set_second);
-            }, 1000)
-        }
-    }, 1000);
-}
-
-function goQuestions(game_list, num, set_second) {
-    $('#game_prompt_text').text(set_second);
-
-    var max = $(`#game_players`).children().length;
-    $(`#game_players div:nth-child(${num - 1})`).css({ 'font-size': '20px', 'padding': '10px' });
-    if (num > max) {
-        num = 1;
+    function pass(){
+        cur_num++;
+        goQuestions(cur_num, set_second);
     }
-    $(`#game_players div:nth-child(${num})`).css({ 'font-size': '40px', 'padding': '30px' });
-
-    var timeinterval = setInterval(function () {
-        var second = $('#game_prompt_text').text() * 1;
-        $('#game_prompt_text').text(second - 1);
-
-        if (second == 1) {
-            clearInterval(timeinterval);
-            $('#game_prompt_text').text('X');
-
-            setTimeout(function () {
-                goQuestions(game_list, num + 1, set_second);
-            }, 1000)
-        }
-    }, 1000);
-}
 
 </script>
+
 </html>
