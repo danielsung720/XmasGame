@@ -55,6 +55,7 @@
                         <div id="game_wrong_answer" onclick="out()">答錯</div>
                         <div id="game_right_answer" onclick="pass()">答對</div>
                     </div>
+                    <div id="game_change_topic" onclick="changeTopic()">下一題</div>
                 </div>
                 <div id="game_item">
                     <div id="game_prompt">
@@ -74,6 +75,8 @@
     var game_list = Array();
     var player_list = Array();
     var cur_num = 0;
+    var topic = ['車', '玩具', '動物', '黑色的物體'];
+    var cur_topic = getRandom(0, topic.length-1);
 
     function startUpGame() {
         $('#start_content').hide();
@@ -99,8 +102,6 @@
             ]
         ];
 
-        var topic = ['車', '玩具', '動物', '黑色的物體'];
-
         var k = 0;
         for (i = 0; i < 2; i++) {
             for (j = 0; j < 6; j++) {
@@ -112,7 +113,6 @@
         game_list = game_list.sort(function (a, b) {
             return a.sort * 1 < b.sort * 1 ? 1 : -1;
         });
-        console.log(game_list);
 
         game_list.forEach(function (item, index) {
             $(`<div id="player${index + 1}" class="game_team${item.team}">${item.name}</div>`).appendTo($('#game_players'));
@@ -130,7 +130,7 @@
 
                 setTimeout(function () {
                     $('#game_prompt_text').text('');
-                    $('#game_topic').text(topic[0]);
+                    $('#game_topic').text(topic[cur_topic]);
                     $('#game_ctrl').css('display', 'flex');
 
                     // var set_second = $('#set_second_input').val();
@@ -306,8 +306,6 @@
         }
         $(`#player${player_list[cur_num]}`).addClass('cur_play');
 
-        console.log(cur_num);
-
         timer = setInterval(function () {
             var second = $('#game_prompt_text').text() * 1;
             $('#game_prompt_text').text(second - 1);
@@ -346,6 +344,15 @@
         goQuestions(cur_num, set_second);
     }
 
+    function changeTopic(){
+        topic.splice(cur_topic, 1);
+        cur_topic = getRandom(0, topic.length - 1);
+        $('#game_topic').text(topic[cur_topic]);
+    }
+
+    function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
 </script>
 
 </html>

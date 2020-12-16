@@ -89,6 +89,7 @@
     font-size: 200px;
 }
 #game_ctrl {
+    width: 320px;
     text-align: center;
     display: none;
     justify-content: center;
@@ -131,6 +132,18 @@
     width: 50%;
     cursor: pointer;
     user-select: none;
+}
+#game_change_topic {
+    width: 50%;
+    height: 100px;
+    line-height: 100px;
+    background: #F28627;
+    color: #fff;
+    padding: 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 30px;
 }
 #game_prompt {
     text-align: center;
