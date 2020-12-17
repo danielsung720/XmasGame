@@ -5,7 +5,20 @@
     align-items: center;
     width: 100%;
     height: 98vh;
-    background-image: url("./background.jpg");
+    background-image: url("./background2.png");
+    background-position: center;
+    background-size: 100%;
+}
+
+#start {
+    font-size: 150px;
+    background: rgb(252, 69, 106);
+    color: #fff;
+    padding: 20px 50px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    outline: none;
 }
 
 /* 設置隊伍畫面 */
@@ -86,7 +99,11 @@
     top: 80px;
     height: 150px;
     line-height: 150px;
-    font-size: 200px;
+    font-size: 180px;
+    padding: 20px;
+    border-radius: 20px;
+    color: #fff;
+    background: rgb(22, 55, 83);
 }
 #game_ctrl {
     width: 320px;
@@ -104,8 +121,8 @@
     width: 50%;
     height: 100px;
     line-height: 100px;
-    background: #F28627;
-    color: #fff;
+    background: rgb(209, 235, 251);
+    color: #000;
     padding: 20px;
     border-radius: 50px;
     cursor: pointer;
@@ -118,16 +135,17 @@
     align-items: center;
 }
 #game_right_answer {
-    background: #022601;
+    background: rgb(255, 229, 192);
+    color: rgb(22, 55, 83);
 }
 #game_wrong_answer {
-    background: #8C0303;
+    background: rgb(252, 69, 106);
+    color: #fff;
 }
 #game_right_answer,
 #game_wrong_answer {
     margin: 10px 10px;
     padding: 20px 20px;
-    color: #fff;
     border-radius: 50px;
     width: 50%;
     cursor: pointer;
@@ -137,8 +155,8 @@
     width: 50%;
     height: 100px;
     line-height: 100px;
-    background: #F28627;
-    color: #fff;
+    background: rgb(209, 235, 251);
+    color: #000;
     padding: 20px;
     border-radius: 50px;
     cursor: pointer;
@@ -155,7 +173,7 @@
 #game_prompt_text {
     line-height: 300px;
     height: 300px;
-    background: #0A4001;
+    background: rgb(252, 69, 106);
     border-radius: 20px;
     padding: 0 60px;
     color: #fff;
@@ -172,11 +190,12 @@
     display: inline-block;
 }
 .game_team1 {
-    background: #8C0303;
+    background: rgb(252, 69, 106);
 }
 
 .game_team2 {
-    background: #022601;
+    background: rgb(255, 229, 192);
+    color: rgb(22, 55, 83);
 }
 
 .game_team3 {
@@ -189,4 +208,8 @@
 .cur_play {
     font-size: 40px;
     padding: 30px;
+}
+.fail {
+    background: #4F4F4F;
+    color: #7B7B7B;
 }
