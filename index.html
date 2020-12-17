@@ -72,8 +72,27 @@
     var game_status = true;
     var timer;
     var set_second;
-    var game_list = Array();
-    var player_list = Array();
+    var cur_second;
+
+    // player
+    var game_list = [
+        { name: '王維', sort: '1', team: 1 },
+        { name: '杜甫', sort: '9', team: 1 },
+        { name: '李白', sort: '3', team: 1 },
+        { name: '陶淵明', sort: '11', team: 1 },
+        { name: '韓愈', sort: '5', team: 1 },
+        { name: '柳宗元', sort: '7', team: 1 },
+
+        { name: '蔡依林', sort: '2', team: 2 },
+        { name: '周杰倫', sort: '4', team: 2 },
+        { name: '林俊傑', sort: '6', team: 2 },
+        { name: '盧廣仲', sort: '8', team: 2 },
+        { name: '陳奕迅', sort: '10', team: 2 },
+        { name: '范瑋琪', sort: '12', team: 2 },
+    ];
+    // player_num
+    var player_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
     var cur_num = 0;
     var topic = ['車', '玩具', '動物', '黑色的物體'];
     var cur_topic = getRandom(0, topic.length-1);
