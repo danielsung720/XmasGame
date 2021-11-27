@@ -1,5 +1,7 @@
 # XmasGame<br>
 2020耶誕節小遊戲<br>
+<a href="https://danielsung720.github.io/XmasGame">範例連結</a>
+
 <br>
 [需先更改]<br>
 16行 button中的字串(ex. 聖誕節小遊戲 / 開始 / blabla....)<br>
